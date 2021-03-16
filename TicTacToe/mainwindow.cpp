@@ -19,6 +19,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::resolveButton(QPushButton *button,int i, int j)
 {
+    steps--;
     if(playerFlag==1){
         button->setText("x");
         playerFlag=-1;
@@ -33,6 +34,7 @@ void MainWindow::resolveButton(QPushButton *button,int i, int j)
     }
 }
 
+/*Slots for the buttons*/
 void MainWindow::on_pushButton_1_1_clicked()
 {
     if(ui->pushButton_1_1->text()==""){
@@ -96,12 +98,12 @@ void MainWindow::on_pushButton_3_3_clicked()
     }
 }
 
-void MainWindow::checkWinner(int flag)
+void MainWindow::checkWinner(int flag) /*This function checks wheter there is a winner or not.*/
 {
-    int counter=0;
-    for(int i=0; i<7; i++){
+    int counter=0; /*With this variable is calculated wheter a player made a row or not*/
+    for(int i=0; i<8; i++){
         for(int j=0;j<3;j++){
-            if(gridMatrix[resolveMatrix[i][j].first][resolveMatrix[i][j].second]==flag){
+            if(gridMatrix[resolveMatrix[i][j].first][resolveMatrix[i][j].second]==flag){ /*Matrix that contains every solution in pairs*/
                 counter++;
             }
         }
@@ -110,14 +112,47 @@ void MainWindow::checkWinner(int flag)
         }
         counter=0;
     }
-    if(counter==3){
+    if(counter==3){  /*If we have a winner then the game is restarted*/
         if(flag == -1)
         {
-            QMessageBox::warning(this,"Winner!","O is the Winner!");
+            QMessageBox::warning(this,"Winner!","O is the Winner!","Restart");
+            scoreO++;
+            ui->scoreO->setText(QString::number(scoreO));
         }
         else
         {
-            QMessageBox::warning(this,"Winner!","X is the Winner!");
+            QMessageBox::warning(this,"Winner!","X is the Winner!","Restart");
+            scoreX++;
+            ui->scoreX->setText(QString::number(scoreX));
         }
+        restartGame();
+        return;
     }
+    if(steps == 0){ /*Draw case*/
+        QMessageBox::warning(this,"Draw!","The game ended in a draw!","Restart");
+        restartGame();
+    }
+}
+
+void MainWindow::restartGame() /*Sets everything to 0*/
+{
+    playerFlag=0;
+    steps=9;
+    ui->pushButton_1_1->setText("");
+    ui->pushButton_1_2->setText("");
+    ui->pushButton_1_3->setText("");
+    ui->pushButton_2_1->setText("");
+    ui->pushButton_2_2->setText("");
+    ui->pushButton_2_3->setText("");
+    ui->pushButton_3_1->setText("");
+    ui->pushButton_3_2->setText("");
+    ui->pushButton_3_3->setText("");
+    for(int i=0; i<3; i++)
+        for(int j=0; j<3; j++)
+            gridMatrix[i][j]=0;
+}
+
+void MainWindow::on_exitBtn_clicked()/*Game exit*/
+{
+    this->close();
 }

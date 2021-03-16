@@ -29,12 +29,18 @@ private slots:
     void on_pushButton_3_2_clicked();
     void on_pushButton_3_3_clicked();
 
+    void on_exitBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     int playerFlag = 0;
+    int steps = 9;
+    int scoreX=0;
+    int scoreO=0;
     int gridMatrix[3][3]={0};
-    QPair<int,int> resolveMatrix[7][3]={
+    QPair<int,int> resolveMatrix[8][3]={
       {QPair<int,int>(0,0),QPair<int,int>(1,1),QPair<int,int>(2,2)},
+      {QPair<int,int>(2,0),QPair<int,int>(1,1),QPair<int,int>(0,2)},
       {QPair<int,int>(0,0),QPair<int,int>(0,1),QPair<int,int>(0,2)},
       {QPair<int,int>(1,0),QPair<int,int>(1,1),QPair<int,int>(1,2)},
       {QPair<int,int>(2,0),QPair<int,int>(2,1),QPair<int,int>(2,2)},
@@ -44,5 +50,6 @@ private:
     };
     void checkWinner(int);
     void resolveButton(QPushButton*,int,int);
+    void restartGame();
 };
 #endif // MAINWINDOW_H
